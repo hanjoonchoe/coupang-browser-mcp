@@ -123,9 +123,17 @@ export async function clickAddToCart(page: Page, quantity: number): Promise<stri
   return "장바구니 담기 버튼 클릭 완료";
 }
 
+/** Text on any button we must never click, no matter how it is classed. */
+const PAYMENT_TEXT = /결제|바로\s*구매|즉시\s*구매|한번에\s*결제|pay/i;
+
 /**
  * Open the checkout (order sheet) from the cart and LEAVE THE TAB OPEN.
  * Never clicks anything on the order sheet itself — payment is human-only.
+ *
+ * The "we don't click pay" guarantee is enforced here, not just documented:
+ *  - we only ever click while still on the cart page (URL asserted)
+ *  - the click target must read "구매하기" and must NOT read like a pay button
+ *  - once the order sheet is open, we stop touching the page entirely
  */
 export async function openCheckout(): Promise<string> {
   const b = await getBrowser();
@@ -134,12 +142,22 @@ export async function openCheckout(): Promise<string> {
   await page.goto(CART_URL, { waitUntil: "domcontentloaded", timeout: 20_000 });
   await page.waitForTimeout(1_500);
   assertLoggedIn(page);
-  const buy = page
-    .locator('button:has-text("구매하기"), a:has-text("구매하기"), [class*="order-btn"]')
-    .first();
+
+  // Hard guard: a redirect (or a future Coupang flow) could land us somewhere
+  // that is no longer the cart. Never click blind in that case.
+  if (!page.url().startsWith("https://cart.coupang.com/")) {
+    return `장바구니 페이지가 아닌 곳으로 이동했습니다 (${page.url()}). 안전을 위해 아무것도 클릭하지 않았습니다 — 브라우저에서 직접 진행하세요 (탭은 열어두었습니다).`;
+  }
+
+  const buy = page.locator('button:has-text("구매하기"), a:has-text("구매하기")').first();
   if ((await buy.count()) === 0) {
     return "장바구니 페이지를 열었지만 '구매하기' 버튼을 찾지 못했습니다. 브라우저에서 직접 진행하세요 (탭은 열어두었습니다).";
   }
+  const label = ((await buy.textContent()) ?? "").trim();
+  if (PAYMENT_TEXT.test(label)) {
+    return `클릭 대상이 결제 버튼처럼 보여("${label}") 중단했습니다. 결제는 자동화하지 않습니다 — 브라우저에서 직접 진행하세요 (탭은 열어두었습니다).`;
+  }
+
   await buy.click();
   await page.waitForTimeout(2_000);
   return `주문서 페이지까지 열었습니다 (현재: ${page.url()}). ⚠️ 결제는 자동화하지 않습니다 — 브라우저에서 내용을 확인하고 직접 결제 버튼을 눌러주세요.`;

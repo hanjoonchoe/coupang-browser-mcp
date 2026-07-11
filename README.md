@@ -162,12 +162,12 @@ which would pop a window on every call.
 | `get_cart` | — | Cart contents (read-only, needs login) |
 | `add_to_cart` | `url`\*, `quantity`, `confirm` | **Two-step**: preview first, executes only with `confirm=true` |
 | `remove_from_cart` | `productName`\*, `confirm` | Two-step; removes only when exactly one item matches |
-| `proceed_to_checkout` | — | Opens the order sheet and **stops** — tab left open, pay button never clicked |
+| `proceed_to_checkout` | `confirm` | Two-step; on `confirm=true` opens the order sheet and **stops** — clicks only on the cart page, never a pay button, tab left open |
 
 ## Safety model
 
-1. **Reads are free, writes confirm.** Cart mutations return a preview and require an explicit `confirm=true` second call.
-2. **Money never moves automatically.** Checkout stops at the order sheet.
+1. **Reads are free, writes confirm.** Cart mutations *and checkout* return a preview and require an explicit `confirm=true` second call.
+2. **Money never moves automatically** — and this is enforced, not just promised. `openCheckout()` clicks only while the URL is still `cart.coupang.com`, refuses any button whose label reads like payment (`결제`, `바로구매`, `pay`), and once the order sheet is open it stops touching the page. No code path clicks a pay button.
 3. **Polite self-throttle**: ≥5s between page loads, ≤60 loads/hour (configurable). There's no contractual limit here, so we impose our own.
 
 ## Configuration

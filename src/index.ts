@@ -393,13 +393,35 @@ server.registerTool(
     title: "Open checkout (payment is human-only)",
     description:
       "Open the order sheet (pre-payment page) from the cart and STOP. The tab is left open in the user's browser. " +
-      "This tool NEVER clicks the pay button — the final payment is always done by the human.",
-    inputSchema: {},
+      "This tool NEVER clicks the pay button — the final payment is always done by the human. " +
+      "Two-step like the other write tools: call without confirm to see what is in the cart, then confirm=true to open the order sheet.",
+    inputSchema: {
+      confirm: z
+        .boolean()
+        .default(false)
+        .describe("false previews the cart; true clicks 구매하기 and opens the order sheet"),
+    },
     annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: true },
   },
-  async () => {
+  async ({ confirm }) => {
     try {
       await politeSlot();
+      if (!confirm) {
+        // Same preview-then-confirm contract as add_to_cart / remove_from_cart:
+        // this is the tool closest to spending money, so it gets the gate too.
+        const items = await withPage(async (page) => {
+          await page.goto(CART_URL, { waitUntil: "domcontentloaded", timeout: 20_000 });
+          await page.waitForTimeout(1_500);
+          assertLoggedIn(page);
+          return extractCart(page);
+        });
+        return ok({
+          preview: true,
+          cart: items,
+          total: items.reduce((s, i) => s + (i.price ?? 0) * (i.quantity ?? 1), 0),
+          next: "위 장바구니로 주문서를 열려면 confirm=true로 다시 호출하세요. 결제 버튼은 절대 누르지 않습니다.",
+        });
+      }
       return ok({ result: await openCheckout() });
     } catch (e) {
       return fail(e);

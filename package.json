@@ -1,6 +1,6 @@
 {
   "name": "coupang-browser-mcp",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Personal-use MCP server that searches Coupang through YOUR OWN Chrome browser (CDP). No API key needed. Not affiliated with Coupang.",
   "type": "module",
   "bin": {
