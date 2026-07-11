@@ -1,0 +1,48 @@
+{
+  "name": "coupang-browser-mcp",
+  "version": "0.2.2",
+  "description": "Personal-use MCP server that searches Coupang through YOUR OWN Chrome browser (CDP). No API key needed. Not affiliated with Coupang.",
+  "type": "module",
+  "bin": {
+    "coupang-browser-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "scripts/run-mcp-hidden.sh",
+    "scripts/show-chrome.sh"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm test && npm run build",
+    "dev": "tsx src/index.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "mcp",
+    "coupang",
+    "shopping",
+    "browser",
+    "cdp",
+    "personal"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "playwright-core": "^1.61.1",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.0.0",
+    "eslint": "^10.7.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.63.0",
+    "vitest": "^3.0.0"
+  }
+}

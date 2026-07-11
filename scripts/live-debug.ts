@@ -1,0 +1,15 @@
+import { chromium } from "playwright-core";
+const b = await chromium.connectOverCDP("http://localhost:9222", { timeout: 10000 });
+console.log("connected; contexts:", b.contexts().length);
+const ctx = b.contexts()[0] ?? (await b.newContext());
+const page = await ctx.newPage();
+console.log("page opened");
+const url = "https://www.coupang.com/np/search?q=%EC%97%90%EC%96%B4%ED%8C%9F";
+await page.goto(url, { waitUntil: "domcontentloaded", timeout: 25000 });
+await page.waitForTimeout(2000);
+console.log("URL:", page.url());
+console.log("TITLE:", await page.title());
+const html = await page.content();
+console.log("HTML bytes:", html.length, "| has __NEXT_DATA__:", html.includes("__NEXT_DATA__"), "| has search-product:", html.includes("search-product"), "| has ProductUnit:", html.includes("ProductUnit"));
+await page.close();
+await b.close();

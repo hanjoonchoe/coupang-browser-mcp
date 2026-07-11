@@ -1,0 +1,63 @@
+TOOL: search_products.live
+ARGS: {"keyword":"에어팟"}
+DATE: 2026-07-11T08:45:40.589Z
+------------------------------------------------------------
+
+{
+ "availableBlobs": [
+  "jsonLd"
+ ],
+ "count": 60,
+ "sample": [
+  {
+   "name": "Apple 2025 에어팟 프로 3 USB-C 블루투스 이어폰, MFHP4KH/A, 화이트",
+   "price": 369000,
+   "rating": null,
+   "reviewCount": 14600,
+   "url": "https://www.coupang.com/vp/products/9024163013?itemId=26462308675&vendorItemId=93437588392&pickType=COU_PICK&q=%EC%97%90%EC%96%B4%ED%8C%9F&searchId=35e7a5af10819842&sourceType=search&itemsCount=60&searchRank=0&rank=0",
+   "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/657x657q90trim/image/retail/images/13880464300917-2f4f4e1b-9bb7-4b73-ba97-0ea444b9e2d9.jpg",
+   "rocket": false,
+   "source": "dom"
+  },
+  {
+   "name": "SMIRIA 노이즈 캔슬링 무선 이어폰 블루투스 5.3 자동 페어링 방수 배터리 잔량 확인, 블랙",
+   "price": 129000,
+   "rating": null,
+   "reviewCount": 1334,
+   "url": "https://www.coupang.com/vp/products/8693177441?itemId=25240134057&vendorItemId=92236755510&sourceType=srp_product_ads&clickEventId=e3c44cf0-7d04-11f1-8c7b-0c989f68d665&korePlacement=15&koreSubPlacement=2&clickEventId=e3c44cf0-7d04-11f1-8c7b-0c989f68d665&korePlacement=15&koreSubPlacement=2",
+   "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/657x657q90trim/image/vendor_inventory/9ece/5d4a715e8429ea7d6c1fe546109fdbd676a63bba7a8aedbce59db35884d4.jpg",
+   "rocket": false,
+   "source": "dom"
+  },
+  {
+   "name": "DAICOO ENC 무선 블루투스 이어폰 노이즈 캔슬링 고음질, 화이트, T90",
+   "price": 139000,
+   "rating": null,
+   "reviewCount": 7,
+   "url": "https://www.coupang.com/vp/products/8976190666?itemId=26276219292&vendorItemId=95670758437&sourceType=srp_product_ads&clickEventId=e3c47400-7d04-11f1-95c9-683d65123da5&korePlacement=15&koreSubPlacement=5&clickEventId=e3c47400-7d04-11f1-95c9-683d65123da5&korePlacement=15&koreSubPlacement=5",
+   "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/657x657q90trim/image/vendor_inventory/c42f/59473c8d2f30e449d2f4b7171e13a68aac5c4d2ffff94b3c36ee63417c40.jpg",
+   "rocket": false,
+   "source": "dom"
+  },
+  {
+   "name": "Apple 2024 에어팟 4 액티브 노이즈 캔슬링 블루투스 이어폰, MXP93KH/A, 화이트",
+   "price": 269000,
+   "rating": null,
+   "reviewCount": 16138,
+   "url": "https://www.coupang.com/vp/products/8367073894?itemId=24175708331&vendorItemId=91193685703&q=%EC%97%90%EC%96%B4%ED%8C%9F&searchId=35e7a5af10819842&sourceType=search&itemsCount=60&searchRank=3&rank=3",
+   "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/657x657q90trim/image/vendor_inventory/81d4/f1710ef0f21e8d2fdf39942bdaae12c473182d2da15b0436a973b54a6661.jpg",
+   "rocket": false,
+   "source": "dom"
+  },
+  {
+   "name": "Apple 2024 에어팟 4 블루투스 이어폰 유선충전, MXP63KH/A, 화이트",
+   "price": 199000,
+   "rating": null,
+   "reviewCount": 9693,
+   "url": "https://www.coupang.com/vp/products/8367073893?itemId=24175708330&vendorItemId=91193685697&q=%EC%97%90%EC%96%B4%ED%8C%9F&searchId=35e7a5af10819842&sourceType=search&itemsCount=60&searchRank=4&rank=4",
+   "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/657x657q90trim/image/vendor_inventory/57b5/ea7fc7e5adf77a44e8a3f37c0139e83c12b165474bcdc9b1d7afeedd6d38.jpg",
+   "rocket": false,
+   "source": "dom"
+  }
+ ]
+}

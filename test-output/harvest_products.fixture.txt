@@ -1,0 +1,28 @@
+TOOL: harvest_products.fixture
+ARGS: {"source":"__NEXT_DATA__-shaped fixture"}
+DATE: 2026-07-11T08:45:36.962Z
+------------------------------------------------------------
+
+[
+ {
+  "name": "Apple 에어팟 프로 2세대",
+  "price": 299000,
+  "originalPrice": null,
+  "rating": 4.8,
+  "reviewCount": 21043,
+  "url": "https://www.coupang.com/vp/products/7638094253",
+  "image": "https://thumbnail.coupangcdn.com/x.jpg",
+  "rocket": true,
+  "source": "embedded"
+ },
+ {
+  "name": "에어팟 프로2 케이스",
+  "price": 8900,
+  "originalPrice": null,
+  "rating": null,
+  "reviewCount": null,
+  "url": "https://www.coupang.com/vp/products/8123456789",
+  "rocket": false,
+  "source": "embedded"
+ }
+]
