@@ -9,13 +9,16 @@
 import { mkdirSync, writeFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { harvestProducts } from "../src/extract.js";
+import { serialize } from "../src/format.js";
 
 const OUT = join(process.cwd(), "test-output");
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
 
+// Serialized exactly the way the tools return it, so these files show what the
+// model actually sees.
 const save = (name: string, args: unknown, body: unknown) => {
-  const text = typeof body === "string" ? body : JSON.stringify(body, null, 1);
+  const text = typeof body === "string" ? body : serialize(body);
   writeFileSync(
     join(OUT, `${name}.txt`),
     `TOOL: ${name}\nARGS: ${JSON.stringify(args)}\nDATE: ${new Date().toISOString()}\n${"-".repeat(60)}\n\n${text}\n`,

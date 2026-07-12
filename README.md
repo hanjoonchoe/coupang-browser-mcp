@@ -164,6 +164,23 @@ which would pop a window on every call.
 | `remove_from_cart` | `productName`\*, `confirm` | Two-step; removes only when exactly one item matches |
 | `proceed_to_checkout` | `confirm` | Two-step; on `confirm=true` opens the order sheet and **stops** — clicks only on the cart page, never a pay button, tab left open |
 
+## Output format
+
+Tools return [TOON](https://toonformat.dev) (Token-Oriented Object Notation) rather than JSON. These
+payloads are mostly uniform arrays — products, reviews, cart items, orders — and TOON states the keys
+once in a header instead of repeating them on every element:
+
+```
+items[2]{productName,price,quantity}:
+  에어팟 프로 3,369000,1
+  충전 케이스,8900,2
+```
+
+That cart is 56% smaller than the equivalent JSON. Savings shrink as rows get more string-heavy: a real
+60-product search result is only ~18% smaller, because it is dominated by long product and image URLs
+that no encoding can compress. The server advertises the format in its MCP `instructions`, so the model
+knows how to read it. Set `COUPANG_MCP_FORMAT=json` to get JSON back.
+
 ## Safety model
 
 1. **Reads are free, writes confirm.** Cart mutations *and checkout* return a preview and require an explicit `confirm=true` second call.
@@ -177,6 +194,7 @@ which would pop a window on every call.
 | `COUPANG_CDP_URL` | `http://localhost:9222` | Chrome DevTools endpoint |
 | `COUPANG_MIN_GAP_MS` | `5000` | Minimum gap between page loads |
 | `COUPANG_HOURLY_CEILING` | `60` | Max page loads per hour |
+| `COUPANG_MCP_FORMAT` | `toon` | Tool output encoding; set to `json` to opt out of TOON |
 
 ## Troubleshooting
 
