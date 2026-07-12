@@ -5,10 +5,11 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 import { withPage } from "./cdp.js";
 import { politeSlot } from "./throttle.js";
+import { serialize, resolveFormat } from "./format.js";
 import { embeddedJson, harvestProducts, domSearchFallback, type BrowserProduct } from "./extract.js";
 
 const ok = (payload: unknown) => ({
-  content: [{ type: "text" as const, text: JSON.stringify(payload, null, 1) }],
+  content: [{ type: "text" as const, text: serialize(payload) }],
 });
 const fail = (e: unknown) => ok({ error: e instanceof Error ? e.message : String(e) });
 
@@ -16,7 +17,19 @@ const VERSION = (
   createRequire(import.meta.url)("../package.json") as { version: string }
 ).version;
 
-const server = new McpServer({ name: "coupang-browser-mcp", version: VERSION });
+const FORMAT = resolveFormat();
+
+const server = new McpServer(
+  { name: "coupang-browser-mcp", version: VERSION },
+  {
+    instructions:
+      FORMAT === "toon"
+        ? "Tool results are TOON (Token-Oriented Object Notation), not JSON. Objects are `key: value` lines; " +
+          "a uniform array is a `name[N]{field1,field2}:` header followed by N indented comma-separated rows, " +
+          "one row per item, in the header's field order. Values are quoted only when they would otherwise be ambiguous."
+        : undefined,
+  },
+);
 
 // Count registrations rather than hardcoding a number that drifts.
 let TOOL_COUNT = 0;
@@ -433,7 +446,7 @@ server
   .connect(new StdioServerTransport())
   .then(() =>
     console.error(
-      `coupang-browser-mcp ${VERSION} ready (${TOOL_COUNT} tools) — needs Chrome on --remote-debugging-port=9222`,
+      `coupang-browser-mcp ${VERSION} ready (${TOOL_COUNT} tools, ${FORMAT} output) — needs Chrome on --remote-debugging-port=9222`,
     ),
   )
   .catch((e) => {

@@ -163,6 +163,23 @@ args = ["-y", "coupang-browser-mcp"]
 | `remove_from_cart` | `productName`\*, `confirm` | 2단계; 정확히 하나만 매칭될 때만 삭제 |
 | `proceed_to_checkout` | `confirm` | 2단계; `confirm=true`일 때 주문서를 열고 **멈춤** — 장바구니 페이지에서만 클릭하고, 결제 버튼은 절대 누르지 않으며, 탭은 열어둠 |
 
+## 출력 형식
+
+도구는 JSON 대신 [TOON](https://toonformat.dev)(Token-Oriented Object Notation)을 반환합니다. 이 서버의
+응답은 대부분 상품·리뷰·장바구니·주문처럼 **형태가 같은 배열**이라서, TOON은 키를 요소마다 반복하지 않고
+헤더에 한 번만 적습니다:
+
+```
+items[2]{productName,price,quantity}:
+  에어팟 프로 3,369000,1
+  충전 케이스,8900,2
+```
+
+위 장바구니는 같은 내용의 JSON보다 56% 작습니다. 다만 문자열이 긴 응답일수록 이득은 줄어듭니다 — 실제
+검색 결과(상품 60개)는 약 18%만 작은데, 길이의 대부분이 압축할 수 없는 상품·이미지 URL이기 때문입니다.
+서버가 MCP `instructions`로 이 형식을 알려주므로 모델이 그대로 읽을 수 있습니다. JSON으로 되돌리려면
+`COUPANG_MCP_FORMAT=json`을 설정하세요.
+
 ## 안전 모델
 
 1. **읽기는 자유롭게, 쓰기는 확인 후.** 장바구니 변경 *및 주문서 열기*는 미리보기를 반환하고, 두 번째 호출에서 `confirm=true`가 있어야 실행됩니다.
@@ -176,6 +193,7 @@ args = ["-y", "coupang-browser-mcp"]
 | `COUPANG_CDP_URL` | `http://localhost:9222` | 크롬 DevTools 엔드포인트 |
 | `COUPANG_MIN_GAP_MS` | `5000` | 페이지 로드 사이 최소 간격 |
 | `COUPANG_HOURLY_CEILING` | `60` | 시간당 최대 페이지 로드 수 |
+| `COUPANG_MCP_FORMAT` | `toon` | 도구 출력 형식; `json`으로 설정하면 TOON 대신 JSON |
 
 ## 문제 해결
 
